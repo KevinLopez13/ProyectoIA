@@ -9,9 +9,6 @@ class Nodo():
 		h.padre = self.nombre
 		self.hijo.append(h)
 
-	def getPadre(self):
-		return self.padre
-
 	def addHijos(self,**kwards):
 		for hijo in kwards.items():
 			self.hijos.append(hijo)
@@ -95,26 +92,33 @@ class Grafo:
 
 		while True:
 			mejorHijo = actualN.getMin()
+			print("Actual:", actualN,'-> Mejor hijo:', mejorHijo,'\n')
+
 			if actualN.hijos and actualN not in colaNodos:
 				colaNodos.append(actualN)
 			elif not actualN.hijos and actualN in colaNodos:
 				colaNodos.pop(0)
-			print("Actual:", actualN,'-> Mejor hijo:', mejorHijo,'\n')
 
 			if mejorHijo != None:
+				if actualN not in respuesta:
+					respuesta.append(actualN)
+				#respuesta.append(mejorHijo)
 				actualN = mejorHijo
 
 				# Vemos si es hoja
 				if not actualN.hijos:
 					if actualN.nombre == meta.nombre:
+						respuesta.append(actualN)
+						for n in respuesta:
+							print(n)
 						return True
 					else:
 						actualN = colaNodos[0]
+						respuesta = [raiz]
 			else:
 				print("None:")
 				actualN = colaNodos[0]
-				
-			
+				respuesta = [raiz]
 
 
 
@@ -170,7 +174,7 @@ g.addNodo(I)
 g.addNodo(J)
 g.addNodo(Z)
 
-print(g.colinas2(I,Z))
+print(g.colinas2(I,C))
 
 
 
