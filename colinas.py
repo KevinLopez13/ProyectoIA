@@ -27,7 +27,14 @@ class Grafo:
 		for n in args:
 			self.nodos[n.nombre] = n
 
-	def colinas(self, raiz, meta):
+	def colinas(self, r, m):
+		raiz = self.nodos.get(r)
+		meta = self.nodos.get(m)
+		if meta == None:
+			return "No existe el nodo meta."
+		elif raiz.nombre == meta.nombre:
+			return meta.nombre
+
 		colaNodos = []
 		respuesta = []
 		actualN = raiz
@@ -41,26 +48,25 @@ class Grafo:
 			elif not actualN.hijos and actualN in colaNodos:
 				colaNodos.pop(0)
 
-			if mejorHijo != None:
-				if actualN not in respuesta:
-					respuesta.append(actualN)
+			if actualN not in respuesta:
+				respuesta.append(actualN)
 
-				actualN = mejorHijo
+			actualN = mejorHijo
 
-				# Vemos si es hoja
-				if not actualN.hijos:
-					if actualN.nombre == meta.nombre:
-						respuesta.append(actualN)
-						res = 'El mejor camino es: '
-						for r in respuesta:
-							res = res + str(r) + ' -> '
-						return res[:-4]
-					else:
-						if colaNodos:
-							actualN = colaNodos[0]
-							respuesta = [raiz]
-						else:
-							return "No existe solución"
+			if actualN.nombre == meta.nombre:
+				respuesta.append(actualN)
+				res = 'El mejor camino es: '
+				for r in range(len(respuesta)-1):
+					res = res + str(respuesta[r]) + ' -> '
+				return res + str(respuesta[-1])
+			
+			# Vemos si es hoja
+			elif not actualN.hijos:
+				if colaNodos:
+					actualN = colaNodos[0]
+					respuesta = [raiz]
+				else:
+					return "No existe solución"
 
 
 
@@ -88,6 +94,7 @@ X = Nodo('X',40)
 g = Grafo()
 g.addNodos(A,B,C,D,E,F,G,H,I,J,Z)
 
-r = g.colinas(I,J)
-print(r)
+m = str(input('Nodo meta: '))
+resp = g.colinas('I',m)
+print(resp)
 
